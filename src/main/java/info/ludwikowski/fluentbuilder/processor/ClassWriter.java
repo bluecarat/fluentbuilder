@@ -69,22 +69,26 @@ public class ClassWriter {
                     printer.getPackageName(),
                     printer.builderName() + ".java");
             if (resourceNotExists(resource)) {
-                final FileObject fo = context.getProcessingEnvironment().getFiler()
-                    .createSourceFile(printer.getFullClassName());
-                final OutputStream outputStream = fo.openOutputStream();
-                final OutputStreamWriter streamWriter = new OutputStreamWriter(outputStream, CHARSET);
-                final PrintWriter printWriter = new PrintWriter(streamWriter);
-                printWriter.print(printer.printClass());
-                printWriter.flush();
-                printWriter.close();
-                context.logInfo("created: " + printer.getFullClassName());
-                return;
+                printToSourceFile(printer);
+            } else {
+                context.logInfo("already exists: " + printer.getFullClassName());
             }
-            context.logInfo("already exists: " + printer.getFullClassName());
         } catch (final IOException e) {
             context.logError(e.getMessage());
             LOGGER.severe("Could not create new class file for " + classMirror.getSimpleName());
         }
+    }
+
+    private void printToSourceFile(final BuilderPrinter printer) throws IOException {
+        final FileObject fo = context.getProcessingEnvironment().getFiler()
+            .createSourceFile(printer.getFullClassName());
+        final OutputStream outputStream = fo.openOutputStream();
+        final OutputStreamWriter streamWriter = new OutputStreamWriter(outputStream, CHARSET);
+        final PrintWriter printWriter = new PrintWriter(streamWriter);
+        printWriter.print(printer.printClass());
+        printWriter.flush();
+        printWriter.close();
+        context.logInfo("created: " + printer.getFullClassName());
     }
 
     private boolean resourceNotExists(final FileObject resource) {

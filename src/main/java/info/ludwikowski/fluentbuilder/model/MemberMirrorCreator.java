@@ -39,7 +39,7 @@ public final class MemberMirrorCreator {
         final String simpleType = simpleType(field);
         final Set<String> imports = getImports(field);
 
-        if (TypeUtils.isListOrSet(type.getName()) && TypeUtils.isGeneric(field)) {
+        if (TypeUtils.isGenericCollection(field)) {
 
             final String collectionType = type.getName();
             final String collectionElementSimpleName = collectionElementSimpleName(field);

@@ -189,9 +189,13 @@ public class MemberMirrorGeneratorVisitor extends SimpleTypeVisitor6<MemberMirro
             methodName.append(StringUtils.capitalize(parameterMirror.getName()));
             methodName.append(CONJUNCTION);
         }
+        removeLastConjunction(methodName);
+        return methodName.toString();
+    }
+
+    private void removeLastConjunction(final StringBuffer methodName) {
         if (methodName.length() >= CONJUNCTION_LENGTH) {
             methodName.delete(methodName.length() - CONJUNCTION_LENGTH, methodName.length());
         }
-        return methodName.toString();
     }
 }

@@ -10,6 +10,8 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.lang.reflect.Field;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.junit.Test;
 
@@ -22,6 +24,7 @@ public class TypeUtilsUnitTest {
     final String finalString = "Final";
     @SuppressWarnings("unused")
     private String norString;
+    final List<String> genericCollection = new ArrayList<String>();
 
     @Test
     public void shouldCheckIfElementIsStaticOrFinal() {
@@ -70,5 +73,19 @@ public class TypeUtilsUnitTest {
     @Test
     public void shouldReturnTrueForPrimitiveType() {
         assertThat(TypeUtils.isPrimitiveType("char"), is(true));
+    }
+
+    @Test
+    public void shouldReturnTrueForGenericCollection() {
+        final Field[] fields = TypeUtilsUnitTest.class.getDeclaredFields();
+        final Field genericCollection = fields[3];
+        assertThat(TypeUtils.isGenericCollection(genericCollection), is(true));
+    }
+
+    @Test
+    public void shouldReturnFalseForSimpleField() {
+        final Field[] fields = TypeUtilsUnitTest.class.getDeclaredFields();
+        final Field genericCollection = fields[1];
+        assertThat(TypeUtils.isGenericCollection(genericCollection), is(false));
     }
 }

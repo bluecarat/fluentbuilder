@@ -170,4 +170,16 @@ public final class TypeUtils {
         return false;
     }
 
+    /**
+     * Checks if a given field is a generic collection or not.
+     * @param field to check
+     * @return true for generic collection, false for everything else
+     */
+    public static boolean isGenericCollection(final Field field) {
+        if (isListOrSet(field.getType().getName()) && isGeneric(field)) {
+            return true;
+        }
+        return false;
+    }
+
 }

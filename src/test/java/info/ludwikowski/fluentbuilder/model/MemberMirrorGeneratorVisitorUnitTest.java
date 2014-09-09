@@ -32,9 +32,9 @@ import info.ludwikowski.fluentbuilder.processor.ProcessorContext;
 @PrepareForTest(ProcessorContext.class)
 public class MemberMirrorGeneratorVisitorUnitTest {
 
-    MemberMirrorGeneratorVisitor testVisitor = null;
+    private MemberMirrorGeneratorVisitor testVisitor = null;
     @Mock
-    ProcessorContext mockedContext;
+    private ProcessorContext mockedContext;
     @Mock
     private PrimitiveType mockedPrimitiveType;
     @Mock

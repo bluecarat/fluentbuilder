@@ -11,6 +11,8 @@ import java.util.Set;
 
 import org.apache.commons.lang.StringUtils;
 
+import de.bluecarat.fluentbuilder.annotation.ReferencedField;
+
 import info.ludwikowski.fluentbuilder.model.ClassMirror;
 import info.ludwikowski.fluentbuilder.util.NameUtils;
 
@@ -85,7 +87,8 @@ public abstract class AbstractClassPrinter {
 
     private void printImportStatements() {
         if (this instanceof PrinterForAbstractBuilder && classMirror.getFieldMembers().size() > 0) {
-            printLine("import de.bluecarat.fluentbuilder.annotation.ReferencedField;");
+            final String fullAnnotationName = ReferencedField.class.getName();
+            printLine("import #0;", fullAnnotationName);
         }
         for (final String fullClassName : getFullClassNamesForImports()) {
             printImportStatement(fullClassName);

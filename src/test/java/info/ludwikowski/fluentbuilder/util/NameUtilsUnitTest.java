@@ -15,7 +15,7 @@ import org.junit.runner.RunWith;
  * @author Andrzej Ludwikowski
  */
 @RunWith(JUnitParamsRunner.class)
-public class StringUtilsUnitTest {
+public class NameUtilsUnitTest {
 
     @SuppressWarnings("unused")
     private Object[] packageStringsWithExpectedResults() {

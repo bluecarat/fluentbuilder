@@ -39,7 +39,8 @@ import info.ludwikowski.fluentbuilder.util.TypeUtils;
  */
 public class MemberMirrorGeneratorVisitor extends SimpleTypeVisitor6<MemberMirror, Element> {
 
-    private static final int CONJUNCTION_LENGTH = 3;
+    private static final String CONJUNCTION = "And";
+    private static final int CONJUNCTION_LENGTH = CONJUNCTION.length();
     private final ProcessorContext context;
 
     /**
@@ -60,7 +61,6 @@ public class MemberMirrorGeneratorVisitor extends SimpleTypeVisitor6<MemberMirro
         return simpleTypes(primitiveType, element);
     }
 
-    @SuppressWarnings("unchecked")
     private MemberMirror simpleTypes(final TypeMirror primitiveType, final Element element) {
 
         final String name = element.toString();
@@ -68,7 +68,7 @@ public class MemberMirrorGeneratorVisitor extends SimpleTypeVisitor6<MemberMirro
         final String simpleType = info.ludwikowski.fluentbuilder.util.NameUtils
             .removePackageNameFromFullyQualifiedName(primitiveType.toString());
 
-        return MemberMirrorImpl.simpleMirror(name, ownerName, simpleType, Collections.EMPTY_SET);
+        return MemberMirrorImpl.simpleMirror(name, ownerName, simpleType, Collections.<String> emptySet());
     }
 
     @Override
@@ -187,7 +187,7 @@ public class MemberMirrorGeneratorVisitor extends SimpleTypeVisitor6<MemberMirro
         final StringBuffer methodName = new StringBuffer();
         for (ParameterMirror parameterMirror : parameterList) {
             methodName.append(StringUtils.capitalize(parameterMirror.getName()));
-            methodName.append("And");
+            methodName.append(CONJUNCTION);
         }
         if (methodName.length() >= CONJUNCTION_LENGTH) {
             methodName.delete(methodName.length() - CONJUNCTION_LENGTH, methodName.length());

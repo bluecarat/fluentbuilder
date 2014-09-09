@@ -1,7 +1,7 @@
 /*
  * Created by Jan van Esdonk for BLUECARAT AG
  */
-package info.ludwikowski.fluentbuilder.common;
+package de.bluecarat.fluentbuilder.common;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.hamcrest.CoreMatchers.is;
@@ -12,7 +12,6 @@ import java.lang.reflect.Method;
 
 import org.junit.Test;
 
-import de.bluecarat.fluentbuilder.common.FactoryMethodInterceptor;
 import de.bluecarat.fluentbuilder.samples.AbstractDoubleExtendsTestObjectBuilder;
 import de.bluecarat.fluentbuilder.samples.AbstractExtendsTestObjectBuilder;
 import de.bluecarat.fluentbuilder.samples.BaseTestObject;
@@ -21,6 +20,11 @@ import de.bluecarat.fluentbuilder.samples.DoubleExtendsTestObject;
 import de.bluecarat.fluentbuilder.samples.DoubleExtendsTestObjectBuilder;
 import de.bluecarat.fluentbuilder.samples.ExtendsTestObject;
 import de.bluecarat.fluentbuilder.samples.ExtendsTestObjectBuilder;
+
+import info.ludwikowski.fluentbuilder.common.AbstractBuilder;
+import info.ludwikowski.fluentbuilder.common.AbstractBuilderFactory;
+
+import net.sf.cglib.proxy.Proxy;
 
 /**
  * @author Jan van Esdonk
@@ -41,6 +45,8 @@ public class FactoryMethodInterceptorUnitTest {
 
         // then
         assertThat(testObject, is(instanceOf(BaseTestObject.class)));
+        assertThat(Proxy.isProxyClass(testObject.getClass()), is(false));
+        assertThat(((BaseTestObject) testObject).getIntField(), is(0));
     }
 
     @Test

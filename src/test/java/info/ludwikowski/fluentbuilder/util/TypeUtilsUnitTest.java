@@ -10,10 +10,6 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 import org.junit.Test;
 
@@ -53,31 +49,26 @@ public class TypeUtilsUnitTest {
 
     @Test
     public void shouldReturnTrueForList() {
-        final List<String> testList = new ArrayList<String>();
-        assertThat(TypeUtils.isList(testList.getClass().getName()), is(true));
+        assertThat(TypeUtils.isList("java.util.List<String>"), is(true));
     }
 
     @Test
     public void shouldReturnFalseForSimpleTypeAndNotList() {
-        final String simple = "test";
-        assertThat(TypeUtils.isList(simple.getClass().getName()), is(false));
+        assertThat(TypeUtils.isList("java.lang.String"), is(false));
     }
 
     @Test
     public void shouldReturnTrueForSet() {
-        final Set<String> testSet = new HashSet<String>();
-        assertThat(TypeUtils.isSet(testSet.getClass().getName()), is(true));
+        assertThat(TypeUtils.isSet("java.util.Set<String>"), is(true));
     }
 
     @Test
     public void shouldReturnFalseForSimpleTypeAndNotSet() {
-        final String simple = "test";
-        assertThat(TypeUtils.isSet(simple.getClass().getName()), is(false));
+        assertThat(TypeUtils.isSet("java.lang.String"), is(false));
     }
 
     @Test
     public void shouldReturnTrueForPrimitiveType() {
-        final String type = "char";
-        assertThat(TypeUtils.isPrimitiveType(type), is(true));
+        assertThat(TypeUtils.isPrimitiveType("char"), is(true));
     }
 }

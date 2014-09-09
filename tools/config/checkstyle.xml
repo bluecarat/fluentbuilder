@@ -112,7 +112,6 @@
 			<property name="maxTotal" value="120" />
 			<property name="maxPublic" value="20" />
 		</module>
-		<module name="GenericWhitespace" />
 		<module name="CovariantEquals" />
 		<module name="DefaultComesLast" />
 		<module name="DeclarationOrder" />

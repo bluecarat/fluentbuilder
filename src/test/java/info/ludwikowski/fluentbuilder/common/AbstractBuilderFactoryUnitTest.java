@@ -37,7 +37,7 @@ public class AbstractBuilderFactoryUnitTest {
     }
 
     @Test
-    public void shouldCreateImplementationWithDummyArgsAndAllFieldsDefault() {
+    public void shouldCreateImplementationWithDummyArgs() {
         // given
         Class<ArgTestObjectBuilder> abstractBuilderClass = ArgTestObjectBuilder.class;
 

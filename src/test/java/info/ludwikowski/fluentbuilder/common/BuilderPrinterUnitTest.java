@@ -33,7 +33,8 @@ public class BuilderPrinterUnitTest {
         final String expectedString = "Text with zero, one or maybe two replacements";
         testPrinter.printLine(exampleString, "zero", "one", "two");
         testPrinter.getClassMirror().getPackageName();
-        assertThat(testPrinter.printClass(), containsString(expectedString));
+        final String replacedText = testPrinter.printClass();
+        assertThat(replacedText, containsString(expectedString));
     }
 
     @Test

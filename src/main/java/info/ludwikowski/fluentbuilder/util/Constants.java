@@ -16,17 +16,15 @@ import java.util.Set;
  */
 public final class Constants {
 
-    public static final List<String> SUPPORTED_VARARGS_COLLECTIONS = getSupportedCollections();
+    public static final List<String> SUPPORTED_VARARGS_COLLECTIONS = new LinkedList<String>();
+
+    static {
+        SUPPORTED_VARARGS_COLLECTIONS.add(Set.class.getName());
+        SUPPORTED_VARARGS_COLLECTIONS.add(List.class.getName());
+    }
 
     private Constants() {
 
-    }
-
-    private static List<String> getSupportedCollections() {
-        final List<String> collections = new LinkedList<String>();
-        collections.add(Set.class.getName());
-        collections.add(List.class.getName());
-        return collections;
     }
 
 }

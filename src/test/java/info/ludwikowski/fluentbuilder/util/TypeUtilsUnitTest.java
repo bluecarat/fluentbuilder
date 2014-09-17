@@ -11,7 +11,9 @@ import static org.junit.Assert.fail;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.junit.Test;
 
@@ -24,7 +26,6 @@ public class TypeUtilsUnitTest {
     final String finalString = "Final";
     @SuppressWarnings("unused")
     private String norString;
-    final List<String> genericCollection = new ArrayList<String>();
 
     @Test
     public void shouldCheckIfElementIsStaticOrFinal() {
@@ -52,40 +53,31 @@ public class TypeUtilsUnitTest {
 
     @Test
     public void shouldReturnTrueForList() {
-        assertThat(TypeUtils.isList("java.util.List<String>"), is(true));
+        final List<String> testList = new ArrayList<String>();
+        assertThat(TypeUtils.isList(testList.getClass().getName()), is(true));
     }
 
     @Test
     public void shouldReturnFalseForSimpleTypeAndNotList() {
-        assertThat(TypeUtils.isList("java.lang.String"), is(false));
+        final String simple = "test";
+        assertThat(TypeUtils.isList(simple.getClass().getName()), is(false));
     }
 
     @Test
     public void shouldReturnTrueForSet() {
-        assertThat(TypeUtils.isSet("java.util.Set<String>"), is(true));
+        final Set<String> testSet = new HashSet<String>();
+        assertThat(TypeUtils.isSet(testSet.getClass().getName()), is(true));
     }
 
     @Test
     public void shouldReturnFalseForSimpleTypeAndNotSet() {
-        assertThat(TypeUtils.isSet("java.lang.String"), is(false));
+        final String simple = "test";
+        assertThat(TypeUtils.isSet(simple.getClass().getName()), is(false));
     }
 
     @Test
     public void shouldReturnTrueForPrimitiveType() {
-        assertThat(TypeUtils.isPrimitiveType("char"), is(true));
-    }
-
-    @Test
-    public void shouldReturnTrueForGenericCollection() {
-        final Field[] fields = TypeUtilsUnitTest.class.getDeclaredFields();
-        final Field genericCollection = fields[3];
-        assertThat(TypeUtils.isGenericCollection(genericCollection), is(true));
-    }
-
-    @Test
-    public void shouldReturnFalseForSimpleField() {
-        final Field[] fields = TypeUtilsUnitTest.class.getDeclaredFields();
-        final Field genericCollection = fields[1];
-        assertThat(TypeUtils.isGenericCollection(genericCollection), is(false));
+        final String type = "char";
+        assertThat(TypeUtils.isPrimitiveType(type), is(true));
     }
 }

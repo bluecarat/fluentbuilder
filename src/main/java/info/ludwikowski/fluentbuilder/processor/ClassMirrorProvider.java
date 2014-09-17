@@ -49,7 +49,13 @@ public class ClassMirrorProvider {
         final Set<ClassMirror> classMirrors = new HashSet<ClassMirror>();
 
         for (final Element element : elements) {
-            if (classVerifier.generateBuilder(element) && ElementKind.CLASS.equals(element.getKind())) {
+
+            if (!ElementKind.CLASS.equals(element.getKind())) {
+                continue;
+            }
+
+            if (classVerifier.generateBuilder(element)) {
+
                 classMirrors.add(new ClassMirrorImpl(element, context));
             }
         }

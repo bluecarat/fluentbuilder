@@ -39,7 +39,7 @@ public final class MemberMirrorCreator {
         final String simpleType = simpleType(field);
         final Set<String> imports = getImports(field);
 
-        if (TypeUtils.isGenericCollection(field)) {
+        if (TypeUtils.isListOrSet(type.getName()) && TypeUtils.isGeneric(field)) {
 
             final String collectionType = type.getName();
             final String collectionElementSimpleName = collectionElementSimpleName(field);
@@ -63,31 +63,22 @@ public final class MemberMirrorCreator {
     }
 
     private static Set<String> getImports(final Field field) {
-        final Set<String> imports = new TreeSet<String>();
-        imports.addAll(getImportsForField(field));
-        imports.addAll(getImportsForGenerics(field));
-        return imports;
-    }
 
-    private static Set<String> getImportsForField(final Field field) {
         final Set<String> imports = new TreeSet<String>();
+        final String declaringClassName = field.getDeclaringClass().getName();
         if (!field.getType().isPrimitive()) {
-            final String declaringClassName = field.getDeclaringClass().getName();
+
             imports.addAll(ImportsFactory.createNecessaryImportsForTypeInClass(
                     field.getType().getName(),
                     declaringClassName));
         }
-        return imports;
-    }
 
-    private static Set<String> getImportsForGenerics(final Field field) {
-        final Set<String> imports = new TreeSet<String>();
         if (TypeUtils.isGeneric(field)) {
-            final String declaringClassName = field.getDeclaringClass().getName();
             final String genericType = NameUtils.getOnlyGenericTypeFromGenericDeclaration(field.getGenericType()
                 .toString());
             imports.addAll(ImportsFactory.createNecessaryImportsForTypeInClass(genericType, declaringClassName));
         }
+
         return imports;
     }
 

@@ -9,9 +9,7 @@ package info.ludwikowski.fluentbuilder.common;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.logging.Logger;
 
 import org.springframework.core.GenericTypeResolver;
@@ -79,28 +77,37 @@ public final class AbstractBuilderFactory {
         return createImplementation(abstractBuilderClass, targetObject);
     }
 
-    private static Object createShortestInstance(final Class<?> targetObjectClass) {
-        final Constructor<?> shortestConstructor = selectShortestConstructor(targetObjectClass);
-        final Class<?>[] parameterTypes = shortestConstructor.getParameterTypes();
+    // CHECKSTYLE IGNORE CyclomaticComplexity FOR NEXT 1 LINES
+    @SuppressWarnings("rawtypes")
+    private static Object createShortestInstance(final Class targetObjectClass) {
+        final Constructor shortestConstructor = selectShortestConstructor(targetObjectClass);
+        final Class[] parameterTypes = shortestConstructor.getParameterTypes();
         final List<Object> emptyParameters = createEmptyParametersFromTypes(parameterTypes);
         final Object[] constructorParameters = emptyParameters.toArray();
         shortestConstructor.setAccessible(true);
         try {
             return shortestConstructor.newInstance(constructorParameters);
-        } catch (InstantiationException | InvocationTargetException | IllegalAccessException e) {
+        } catch (InstantiationException e) {
             LOGGER.severe("Could not create new instance of " + targetObjectClass.getName() + "!");
+            return null;
+        } catch (IllegalAccessException e) {
+            LOGGER.severe("Constructor of " + targetObjectClass.getName() + " not accessible!");
             return null;
         } catch (IllegalArgumentException e) {
             LOGGER.severe("Illegal argument for constructor found!");
             return null;
+        } catch (InvocationTargetException e) {
+            LOGGER.severe("Could not invoke constructor of " + targetObjectClass.getName());
+            return null;
         }
     }
 
-    private static Constructor<?> selectShortestConstructor(final Class<?> targetObjectClass) {
-        final Constructor<?>[] constructors = targetObjectClass.getConstructors();
-        Constructor<?> shortestConstructor = null;
+    @SuppressWarnings("rawtypes")
+    private static Constructor selectShortestConstructor(final Class targetObjectClass) {
+        final Constructor[] constructors = targetObjectClass.getConstructors();
+        Constructor shortestConstructor = null;
         int minParameter = MAX_ARGUMENTS;
-        for (Constructor<?> constructor : constructors) {
+        for (Constructor constructor : constructors) {
             final int parameterCount = constructor.getParameterTypes().length;
             if (parameterCount < minParameter) {
                 shortestConstructor = constructor;
@@ -110,9 +117,10 @@ public final class AbstractBuilderFactory {
         return shortestConstructor;
     }
 
-    private static List<Object> createEmptyParametersFromTypes(final Class<?>[] parameterTypes) {
+    @SuppressWarnings("rawtypes")
+    private static List<Object> createEmptyParametersFromTypes(final Class[] parameterTypes) {
         final List<Object> parameters = new ArrayList<Object>();
-        for (Class<?> parameterClass : parameterTypes) {
+        for (Class parameterClass : parameterTypes) {
             parameters.add(getDefaultValueOfClass(parameterClass));
         }
         return parameters;
@@ -126,22 +134,19 @@ public final class AbstractBuilderFactory {
         }
     }
 
+    // CHECKSTYLE IGNORE CyclomaticComplexity FOR NEXT 1 LINES
     private static Object getDefaultValueOfPrimitiveType(final Class<?> className) {
-        final Map<String, Object> defaultValues = getMapWithDefaultValuesForPrimitiveTypes();
-        final Object returnValue = defaultValues.get(className.getName());
-        if (returnValue == null) {
+        if ("boolean".equals(className.getName())) {
+            return false;
+        } else if ("char".equals(className.getName())) {
+            return '\u0000';
+        } else if ("byte".equals(className.getName())) {
+            return Byte.valueOf((byte) 0);
+        } else if ("short".equals(className.getName())) {
+            return Short.valueOf((short) 0);
+        } else {
             return 0;
         }
-        return returnValue;
-    }
-
-    private static Map<String, Object> getMapWithDefaultValuesForPrimitiveTypes() {
-        final Map<String, Object> defaultValues = new HashMap<String, Object>();
-        defaultValues.put("boolean", false);
-        defaultValues.put("char", '\u0000');
-        defaultValues.put("byte", Byte.valueOf((byte) 0));
-        defaultValues.put("short", Short.valueOf((short) 0));
-        return defaultValues;
     }
 
 }

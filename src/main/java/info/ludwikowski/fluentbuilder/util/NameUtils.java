@@ -17,7 +17,7 @@ import java.util.regex.Pattern;
 public final class NameUtils {
 
     public static final String EMPTY = "";
-    public static final List<Character> VOWELS = getVowels();
+    public static final List<Character> VOWELS = new ArrayList<Character>();
     private static final String INDEFINITE_ARTICLE_BEFORE_CONSONANT = "a";
     private static final String INDEFINITE_ARTICLE_BEFORE_VOWEL = "an";
     private static final String TYPE_PART_REGEXP = "(\\.[a-zA-Z0-9]*)$";
@@ -26,18 +26,16 @@ public final class NameUtils {
     // CHECKSTYLE IGNORE DeclarationOrderCheck FOR NEXT 1 LINES
     public static final Pattern IMPORT_STATEMENT_PATTERN = Pattern.compile(IMPORT_STATEMENT_REGEXP);
 
-    private NameUtils() {
-
+    static {
+        VOWELS.add('a');
+        VOWELS.add('e');
+        VOWELS.add('i');
+        VOWELS.add('o');
+        VOWELS.add('u');
     }
 
-    private static List<Character> getVowels() {
-        final List<Character> vowels = new ArrayList<Character>();
-        vowels.add('a');
-        vowels.add('e');
-        vowels.add('i');
-        vowels.add('o');
-        vowels.add('u');
-        return vowels;
+    private NameUtils() {
+
     }
 
     /**

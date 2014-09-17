@@ -8,10 +8,10 @@ import java.util.TreeSet;
 
 import javax.lang.model.type.TypeMirror;
 
+import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.runners.MockitoJUnitRunner;
+import org.mockito.MockitoAnnotations;
 
 import de.bluecarat.fluentbuilder.model.MemberMirrorConstructorImpl;
 import de.bluecarat.fluentbuilder.model.ParameterMirror;
@@ -20,11 +20,15 @@ import de.bluecarat.fluentbuilder.model.ParameterMirror;
  * Dummy test case to "ignore" getter and setters in test coverage checks
  * @author Jan van Esdonk
  */
-@RunWith(MockitoJUnitRunner.class)
 public class GetterAndSetterDummyTest {
 
     @Mock
     TypeMirror mockedTypeMirror;
+
+    @Before
+    public void setUp() throws Exception {
+        MockitoAnnotations.initMocks(this);
+    }
 
     @Test
     public void dummyTest() {
